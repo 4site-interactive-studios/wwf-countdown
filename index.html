@@ -80,7 +80,7 @@
       const tz = timezone === 'none' ? 'false' : timezone;
 
       document.querySelector('.code-output pre').textContent =
-        '<div class="countdown"></div>\n<script>\n  window.CountdownOptions = {\n    el: ".countdown",\n    date: "'+ dateTime.split('T')[0] + '",\n    time: "' + dateTime.split('T')[1] +'",\n    timezone: ' +timezone === 'none' ? 'false' : timezone +'\n  }\n<\/script>\n<script defer src="https://cdn.jsdelivr.net/gh/4site-interactive-studios/wwf-countdown@main/src/index.js"><\/script>'
+        '<div class="countdown"></div>\n<script>\n  window.CountdownOptions = {\n    el: ".countdown",\n    date: "'+ dateTime.split('T')[0] + '",\n    time: "' + dateTime.split('T')[1] +'",\n    timezone: ' +tz+'\n  }\n<\/script>\n<script defer src="https://cdn.jsdelivr.net/gh/4site-interactive-studios/wwf-countdown@main/src/index.js"><\/script>'
     })
   </script>
 </div>
