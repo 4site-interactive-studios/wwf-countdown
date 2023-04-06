@@ -5,7 +5,7 @@ Counts down to a specified DateTime, optionally to a given timezone (UTC offset)
 Include the script in `/src/index.js` on your page and add the following code:
 
 ```js
-CountdownOptions = {
+window.CountdownOptions = {
   el: '.countdown', // element where the component should mount
   date: '2023-04-07', // yyyy-mm-dd
   time: '00:00', // hh:mm
