@@ -21,6 +21,7 @@
         font-size: 20px;
         padding: 20px;
         white-space: pre-wrap;
+        line-height: 1;
     }
   </style>
 </head>
@@ -65,7 +66,7 @@
     </select>
   </div>
   <div class="form-input">
-    <input type="checkbox" id="font-include" name="font-include">
+    <input class="" type="checkbox" id="font-include" name="font-include">
     <label for="font-include">
       Include font file?
     </label>
@@ -90,7 +91,7 @@
     const yyyy = nextWeek.getFullYear();
     const mm = String(nextWeek.getMonth() + 1).padStart(2, '0');
     const dd = String(nextWeek.getDate()).padStart(2, '0');
-    dateTimeInput.value = `${yyyy}-${mm}-${dd}T00:00:00`;
+    dateTimeInput.value = yyyy+'-'+mm+'-'+dd+'T00:00:00';
 
     function outputCode() {
       const dateTime = dateTimeInput.value;
@@ -107,6 +108,7 @@
     }
 
     dateTimeInput.addEventListener('change', outputCode)
+    dateTimeInput.addEventListener('input', outputCode)
     timezoneInput.addEventListener('change', outputCode)
     fontIncludeInput.addEventListener('change', outputCode)
     fontScaleInput.addEventListener('change', outputCode)
