@@ -3,6 +3,8 @@ class CountdownComponent {
     this.el = document.querySelector(options.el);
     this.countdownTarget = new Date(`${options.date}T${options.time}`);
     this.timezone = options.timezone || false;
+    this.loadFont = options.loadFont || false;
+    this.fontScale = options.fontScale || 100;
 
     this.init();
     this.countdown();
@@ -10,21 +12,27 @@ class CountdownComponent {
   }
 
   init() {
-    document.fonts.add(
-      new FontFace(
-        "WWF",
-        "url(https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10114/wwf-webfont-fcd75269da784171a6087827530d7f74573b6c150e7de0b1b27db72c73e8b04a.ttf?v=1680818941000)"
-      )
-    );
+    if (this.loadFont) {
+      document.fonts.add(
+        new FontFace(
+          "WWF",
+          "url(https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10114/wwf-webfont.woff2?v=1679697538000)",
+          {
+            display: "block"
+          }
+        )
+      );
+    }
+
 
     document.head.insertAdjacentHTML("beforeend",
       `<style>
         .countdown__container {
-          font-family: "WWF", serif;
+          font-family: "WWF", sans-serif;
           background-color: #D6F1EF;
           color: #00675A;
           display: flex;
-          padding: 20px 20px 30px;
+          padding: 0.2em 0.2em 0.3em;
           justify-content: center;
           align-items: center;
         }
@@ -42,20 +50,20 @@ class CountdownComponent {
         }
         
         .countdown__divider {
-          padding: 0 12px;
-          font-size: 50px;
-          transform: translateY(-18px);
+          font-size: 0.5em;
+          padding: 0 0.2em;
+          transform: translateY(-0.33em);
         }
         
         .countdown__time {
-          font-size: 100px;
+          font-size: 1em;
           line-height: 100%;
         }
         
         .countdown__unit {
-          font-size: 24px;
+          font-size: 0.24em;
           line-height: 100%;
-          margin-top: 10px;
+          margin-top: 0.4em;
         }
         
         .countdown__section--expired {
@@ -96,6 +104,8 @@ class CountdownComponent {
       </div>
     `;
 
+
+    this.countdownContainer = this.el.querySelector('.countdown__container')
     this.daysSection = this.el.querySelector('.countdown__section--days')
     this.daysTime = this.el.querySelector('.countdown__section--days .countdown__time')
     this.hoursSection = this.el.querySelector('.countdown__section--hours')
@@ -104,6 +114,8 @@ class CountdownComponent {
     this.minutesTime = this.el.querySelector('.countdown__section--minutes .countdown__time')
     this.secondsSection = this.el.querySelector('.countdown__section--seconds')
     this.secondsTime = this.el.querySelector('.countdown__section--seconds .countdown__time')
+
+    this.watchContainerWidthProperty();
   }
 
   countdown() {
@@ -147,6 +159,16 @@ class CountdownComponent {
 
     //return a time to start counting from offset by UTC and a given timezone offset
     return new Date(UTC + (3600000 * timezone));
+  }
+
+  watchContainerWidthProperty() {
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        this.countdownContainer.style.fontSize = `calc(${this.fontScale}px * ${entry.borderBoxSize[0].inlineSize}/440)`
+      }
+    });
+
+    resizeObserver.observe(this.countdownContainer);
   }
 }
 

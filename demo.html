@@ -8,7 +8,8 @@
   <title>Document</title>
   <style>
       .container {
-          width: 700px;
+          max-width: 100%;
+          width: 1200px;
           margin: 30px auto 0;
       }
   </style>
@@ -21,9 +22,10 @@
 <script>
   CountdownOptions = {
     el: '.countdown',
-    date: '2023-04-07', // yyyy-mm-dd
+    date: '2023-05-15', // yyyy-mm-dd
     time: '00:00', // hh:mm
-    timezone: -4 // hours in relation to UTC || false for local time
+    timezone: -4, // hours in relation to UTC || false for local time
+    loadFont: true
   }
 </script>
 
