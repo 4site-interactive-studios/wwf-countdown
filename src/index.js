@@ -115,7 +115,7 @@ class CountdownComponent {
     this.secondsSection = this.el.querySelector('.countdown__section--seconds')
     this.secondsTime = this.el.querySelector('.countdown__section--seconds .countdown__time')
 
-    this.watchContainerWidthProperty();
+    this.setElementFontSizeOnResize();
   }
 
   countdown() {
@@ -161,7 +161,7 @@ class CountdownComponent {
     return new Date(UTC + (3600000 * timezone));
   }
 
-  watchContainerWidthProperty() {
+  setElementFontSizeOnResize() {
     const resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         this.countdownContainer.style.fontSize = `calc(${this.fontScale}px * ${entry.borderBoxSize[0].inlineSize}/440)`

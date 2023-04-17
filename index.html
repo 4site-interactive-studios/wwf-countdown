@@ -37,14 +37,14 @@
       <option value="none" selected>None (user's local time)</option>
       <option value="-12">UTC -12</option>
       <option value="-11">UTC -11</option>
-      <option value="-10">UTC -10</option>
-      <option value="-9">UTC -9</option>
-      <option value="-8">UTC -8</option>
-      <option value="-7">UTC -7</option>
-      <option value="-6">UTC -6</option>
-      <option value="-5">UTC -5</option>
-      <option value="-4">UTC -4</option>
-      <option value="-3">UTC -3</option>
+      <option value="-10">UTC -10 (CKT, HST, SDT)</option>
+      <option value="-9">UTC -9 (AKST, HDT, SAST)</option>
+      <option value="-8">UTC -8 (AKDT, PST)</option>
+      <option value="-7">UTC -7 (AZT, MST, PDT, SADT)</option>
+      <option value="-6">UTC -6 (CST, MDT, SAST)</option>
+      <option value="-5">UTC -5 (CDT, EST)</option>
+      <option value="-4">UTC -4 (AST, EDT)</option>
+      <option value="-3">UTC -3 (ADT)</option>
       <option value="-2">UTC -2</option>
       <option value="-1">UTC -1</option>
       <option value="0">UTC</option>
@@ -65,23 +65,55 @@
     </select>
   </div>
   <div class="form-input">
-    <button type="button" class="btn-code">Get code</button>
+    <input type="checkbox" id="font-include" name="font-include">
+    <label for="font-include">
+      Include font file?
+    </label>
+  </div>
+  <div class="form-input">
+    <label for="font-scale">
+      Font size scale
+    </label>
+    <input type="text" id="font-scale" name="font-include" value="100">
   </div>
 
   <div class="code-output"><pre></pre></div>
 
   <script>
-    document.querySelector('.btn-code').addEventListener('click', () => {
-      const dateTime = document.getElementById('datetime').value;
-      const timezone = document.getElementById('timezone').value
+    const dateTimeInput = document.getElementById('datetime');
+    const timezoneInput = document.getElementById('timezone');
+    const fontIncludeInput = document.getElementById('font-include');
+    const fontScaleInput = document.getElementById('font-scale');
+
+    const today = new Date();
+    const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const yyyy = nextWeek.getFullYear();
+    const mm = String(nextWeek.getMonth() + 1).padStart(2, '0');
+    const dd = String(nextWeek.getDate()).padStart(2, '0');
+    dateTimeInput.value = `${yyyy}-${mm}-${dd}T00:00:00`;
+
+    function outputCode() {
+      const dateTime = dateTimeInput.value;
+      const timezone = timezoneInput.value
+      const fontInclude = fontIncludeInput.checked;
+      const fontScale = fontScaleInput.value;
 
       if (!dateTime || !timezone) return;
 
       const tz = timezone === 'none' ? 'false' : timezone;
 
       document.querySelector('.code-output pre').textContent =
-        '<div class="countdown"></div>\n<script>\n  window.CountdownOptions = {\n    el: ".countdown",\n    date: "'+ dateTime.split('T')[0] + '",\n    time: "' + dateTime.split('T')[1] +'",\n    timezone: ' +tz+'\n  }\n<\/script>\n<script defer src="https://cdn.jsdelivr.net/gh/4site-interactive-studios/wwf-countdown@main/src/index.js"><\/script>'
-    })
+        '<div class="countdown"></div>\n<script>\n  window.CountdownOptions = {\n    el: ".countdown",\n    date: "'+ dateTime.split('T')[0] + '",\n    time: "' + dateTime.split('T')[1] +'",\n    timezone: ' +tz+',\n    loadFont: ' +fontInclude+',\n    fontScale: ' +fontScale+'  \n  }\n<\/script>\n<script defer src="https://cdn.jsdelivr.net/gh/4site-interactive-studios/wwf-countdown@main/src/index.js"><\/script>'
+    }
+
+    dateTimeInput.addEventListener('change', outputCode)
+    timezoneInput.addEventListener('change', outputCode)
+    fontIncludeInput.addEventListener('change', outputCode)
+    fontScaleInput.addEventListener('change', outputCode)
+    fontScaleInput.addEventListener('input', outputCode)
+
+
+    outputCode();
   </script>
 </div>
 </body>
